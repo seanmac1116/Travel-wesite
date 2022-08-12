@@ -3,10 +3,12 @@ const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
 const app = express()
-const {contactmodel} = require("./models/contact")
+const {contactmodel} = require("./route/models/contact")
+const bodyParser = require('body-parser');
 
 app.set("view engine", "ejs")
-app.use(express.static(path.join(__dirname, "public")))
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', (req, res) => {
     res.render('./index');
   })
@@ -17,7 +19,7 @@ app.get('/', (req, res) => {
     number:req.body.number,
     subject:req.body.subject,
     msg:req.body.msg
-    })
+    }).then(() =>{res.render('./index');})
 })
 
   let port = process.env.PORT;
